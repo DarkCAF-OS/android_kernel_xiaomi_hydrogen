@@ -936,9 +936,6 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
 #endif
 	if (test_opt(sbi, DISABLE_EXT_IDENTIFY))
 		seq_puts(seq, ",disable_ext_identify");
-<<<<<<< HEAD
-
-=======
 	if (test_opt(sbi, INLINE_DATA))
 		seq_puts(seq, ",inline_data");
 	else
@@ -1169,7 +1166,6 @@ skip:
 	/* Update the POSIXACL Flag */
 	sb->s_flags = (sb->s_flags & ~MS_POSIXACL) |
 		(test_opt(sbi, POSIX_ACL) ? MS_POSIXACL : 0);
->>>>>>> 3256173b5c5cda02c527c77d2284351ec6181cfc
 
 	return 0;
 restore_gc:
@@ -1286,11 +1282,7 @@ static const struct export_operations f2fs_export_ops = {
 	.get_parent = f2fs_get_parent,
 };
 
-<<<<<<< HEAD
 loff_t max_file_size(unsigned bits)
-=======
-static loff_t max_file_blocks(void)
->>>>>>> 3256173b5c5cda02c527c77d2284351ec6181cfc
 {
 	loff_t result = (DEF_ADDRS_PER_INODE - F2FS_INLINE_XATTR_ADDRS);
 	loff_t leaf_count = ADDRS_PER_BLOCK;
