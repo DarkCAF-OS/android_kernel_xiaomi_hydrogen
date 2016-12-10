@@ -678,7 +678,6 @@ struct mxt_data {
 	struct bin_attribute self_ref_attr;
 	struct bin_attribute mutual_ref_attr;
 	bool debug_enabled;
-	bool disable_keys;
 	bool driver_paused;
 	bool irq_enabled;
 	u8 bootloader_addr;
@@ -1789,11 +1788,6 @@ static void mxt_proc_t97_messages(struct mxt_data *data, u8 *msg)
 	bool curr_state, new_state;
 	bool sync = false;
 	unsigned long keystates = le32_to_cpu(msg[2]);
-
-	if(data->disable_keys) {
-		dev_err(&data->client->dev, "keyarray is disabled\n");
-		return;
-	}
 
 	if (!input_dev)
 		return;
@@ -3741,36 +3735,6 @@ static ssize_t mxt_debug_enable_store(struct device *dev,
 	}
 }
 
-static ssize_t mxt_disable_keys_show(struct device *dev,
-	struct device_attribute *attr, char *buf)
-{
-	struct mxt_data *data = dev_get_drvdata(dev);
-	int count;
-	char c;
-
-	c = data->disable_keys ? '1' : '0';
-	count = sprintf(buf, "%c\n", c);
-
-	return count;
-}
-
-static ssize_t mxt_disable_keys_store(struct device *dev,
-	struct device_attribute *attr, const char *buf, size_t count)
-{
-	struct mxt_data *data = dev_get_drvdata(dev);
-	int i;
-
-	if (sscanf(buf, "%u", &i) == 1 && i < 2) {
-		data->disable_keys = (i == 1);
-
-		dev_dbg(dev, "%s\n", i ? "keys are disabled" : "keys are enabled");
-		return count;
-	} else {
-		dev_dbg(dev, "disable_keys write error\n");
-		return -EINVAL;
-	}
-}
-
 static int mxt_check_mem_access_params(struct mxt_data *data, loff_t off,
 				       size_t *count)
 {
@@ -5332,8 +5296,6 @@ static ssize_t mxt_mem_access_write(struct file *filp, struct kobject *kobj,
 static DEVICE_ATTR(update_fw, S_IWUSR | S_IRUSR, mxt_update_fw_show, mxt_update_fw_store);
 static DEVICE_ATTR(debug_enable, S_IWUSR | S_IRUSR, mxt_debug_enable_show,
 			mxt_debug_enable_store);
-static DEVICE_ATTR(disable_keys, S_IWUSR | S_IRUSR, mxt_disable_keys_show,
-			mxt_disable_keys_store);
 static DEVICE_ATTR(pause_driver, S_IWUSR | S_IRUSR, mxt_pause_show,
 			mxt_pause_store);
 static DEVICE_ATTR(version, S_IRUGO, mxt_version_show, NULL);
@@ -5356,7 +5318,6 @@ static DEVICE_ATTR(panel_color, S_IRUSR, mxt_panel_color_show, NULL);
 static struct attribute *mxt_attrs[] = {
 	&dev_attr_update_fw.attr,
 	&dev_attr_debug_enable.attr,
-	&dev_attr_disable_keys.attr,
 	&dev_attr_pause_driver.attr,
 	&dev_attr_version.attr,
 	&dev_attr_build.attr,
