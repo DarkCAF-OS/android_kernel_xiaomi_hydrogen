@@ -12,7 +12,7 @@
 
 NEBULA_VERSION="1.0-BETA-CM14.1-hydrogen"
 
-TOOLCHAIN="/home/legacy/toolchains/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+TOOLCHAIN="/home/k2wl/rohan/test/UBERTC/bin/aarch64-linux-android-"
 ARCHITECTURE=arm64
 COMPILER_FLAGS_KERNEL=""
 COMPILER_FLAGS_MODULE=""
@@ -24,7 +24,7 @@ DTBTOOL_CMD=""
 MODULES_IN_SYSTEM="n"
 OUTPUT_FOLDER=""
 
-DEFCONFIG="nebula_hydrogen_defconfig"
+DEFCONFIG="lineageos_hydrogen_defconfig"
 DEFCONFIG_VARIANT=""
 
 KERNEL_NAME="Nebula-Kernel"
